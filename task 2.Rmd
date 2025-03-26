@@ -1,0 +1,62 @@
+---
+title: "Climate Data Visualization"
+author: "Inshal"
+date: "2025-03-26"
+output: html_document
+---
+
+```{r, echo=TRUE}
+# Load required libraries
+library(tidyverse)
+library(ggplot2)
+
+# Define dataset path (Ensure the correct path)
+dataset_path <- "C:\\Users\\Student\\Desktop\\pf oel\\task 2\\archive (10)\\GlobalTemperatures.csv"
+
+# Check if the file exists before reading
+test_file <- file.exists(dataset_path)
+if (!test_file) {
+  stop("Error: File not found. Please check the file path and try again.")
+}
+
+# Load dataset
+climate_data <- read.csv(dataset_path)
+
+# Convert date column to Date type
+climate_data$dt <- as.Date(climate_data$dt)
+
+# Remove missing values for key columns
+climate_data <- climate_data %>%
+  select(dt, LandAverageTemperature, LandAndOceanAverageTemperature) %>%
+  drop_na()
+
+# Line Chart: Global Land Temperature Change Over Time
+line_chart <- ggplot(climate_data, aes(x = dt, y = LandAverageTemperature)) +
+  geom_line(color = "blue", size = 1) +
+  labs(title = "Global Land Temperature Change Over Time",
+       x = "Year",
+       y = "Temperature Anomaly (°C)") +
+  theme_minimal()
+
+# Display line chart
+print(line_chart)
+
+# Save plot as PNG
+ggsave("temperature_trend.png", plot = line_chart, width = 7, height = 5)
+
+# Scatter Plot: Land vs. Land-Ocean Average Temperature
+scatter_plot <- ggplot(climate_data, aes(x = LandAverageTemperature, y = LandAndOceanAverageTemperature)) +
+  geom_point(color = "red", alpha = 0.6) +
+  labs(title = "Land vs. Land-Ocean Temperature Anomaly",
+       x = "Land Temperature Anomaly (°C)",
+       y = "Land-Ocean Temperature Anomaly (°C)") +
+  theme_minimal()
+
+# Display scatter plot
+print(scatter_plot)
+
+# Save scatter plot as PNG
+ggsave("land_vs_ocean_temp.png", plot = scatter_plot, width = 7, height = 5)
+
+print("Plots saved successfully!")
+```

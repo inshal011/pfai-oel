@@ -1,0 +1,42 @@
+---
+title: "Quick Data Exploration"
+author: "Inshal"
+date: "2025-03-26"
+output: html_document
+---
+
+```{r, echo=TRUE}
+# Set working directory (Update this path)
+setwd("C:/Users/Student/Desktop/pf oel")  
+
+# Set CRAN mirror
+options(repos = c(CRAN = "https://cloud.r-project.org/"))
+
+# Install necessary packages if not installed
+if (!requireNamespace("tidyverse", quietly = TRUE)) {
+    install.packages("tidyverse")
+}
+
+# Load required library
+library(tidyverse)
+
+# Load the dataset
+data <- read.csv("WHR2024.csv")  # Ensure file exists in the working directory
+
+# Display the first 5 rows
+print("First 5 rows of the dataset:")
+head(data, 5)
+
+# Get summary statistics
+print("Summary statistics:")
+summary(data)
+
+# Identify missing values
+print("Missing values in each column:")
+missing_values <- colSums(is.na(data))
+print(missing_values)
+
+# Save the cleaned dataset
+write.csv(data, "cleaned_happiness.csv", row.names = FALSE)
+print("Cleaned dataset saved as 'cleaned_happiness.csv'")
+
